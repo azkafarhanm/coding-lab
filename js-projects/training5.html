@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="id">
+<head> 
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Antrian Tiket Sepak Bola (Simulasi)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding: 20px; background:#0f172a; color:#e6eef8;}
+    h1 { margin: 0 0 12px; font-size: 20px; }
+    .card { background:#0b1220; padding:14px; border-radius:8px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); max-width:760px; }
+    .controls { display:flex; gap:8px; margin:10px 0; flex-wrap:wrap; }
+    input[type="text"]{ padding:8px 10px; border-radius:6px; border:1px solid #223; background:#081018; color:#e6eef8; min-width:200px; }
+    button { padding:8px 12px; border-radius:6px; border:none; cursor:pointer; }
+    button.primary { background:#0ea5a3; color:#052; }
+    button.warn { background:#f97316; color:#210; }
+    button.ghost { background:#1f2937; color:#cbd5e1; border:1px solid #2b3440; }
+    pre { background:#06101a; padding:10px; border-radius:6px; overflow:auto; }
+    .slot { padding:8px 10px; border-radius:6px; background:#071029; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; }
+    .empty { opacity:0.6; color:#9aa7b8; }
+    .log { margin-top:12px; font-family:monospace; font-size:13px; color:#a9d5c4; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Simulasi Antrian Tiket (7 slot)</h1>
+
+    <div class="controls">
+      <input id="namaInput" type="text" placeholder="Masukkan nama supporter..." />
+      <button id="btnEnqueue" class="primary">Tambah (Enqueue)</button>
+      <button id="btnDequeue" class="warn">Layani (Dequeue)</button>
+      <button id="btnAuto" class="ghost">Contoh Otomatis</button>
+      <button id="btnReset" class="ghost">Reset</button>
+    </div>
+
+    <div id="status"></div>
+
+    <div class="log" id="logArea"></div>
+  </div>
+
+  <script>
+    // Versi DOM dari kode antrianmu
+    const KAPASITAS = 7;
+    let antrian = new Array(KAPASITAS).fill(null);
+    let jumlahOrang = 0;
+
+    // Elemen DOM
+    const statusEl = document.getElementById('status');
+    const logEl = document.getElementById('logArea');
+    const namaInput = document.getElementById('namaInput');
+    const btnEnqueue = document.getElementById('btnEnqueue');
+    const btnDequeue = document.getElementById('btnDequeue');
+    const btnAuto = document.getElementById('btnAuto');
+    const btnReset = document.getElementById('btnReset');
+
+    // Render fungsi: update tampilan antrian & log kecil
+    function render() {
+      // render slot
+      statusEl.innerHTML = '<h3>Slot Antrian (1 → 7)</h3>';
+      for (let i = 0; i < KAPASITAS; i++) {
+        const div = document.createElement('div');
+        div.className = 'slot';
+        const isi = antrian[i] === null ? '[kosong]' : antrian[i];
+        if (antrian[i] === null) div.innerHTML = `<span class="empty">Slot ${i+1}: ${isi}</span><small></small>`;
+        else div.innerHTML = `<strong>Slot ${i+1}:</strong> <span>${isi}</span>`;
+        statusEl.appendChild(div);
+      }
+      // ringkasan
+      const ringkasan = document.createElement('div');
+      ringkasan.style.marginTop = '8px';
+      ringkasan.style.opacity = '0.9';
+      ringkasan.textContent = `Total terisi: ${jumlahOrang}/${KAPASITAS}`;
+      statusEl.appendChild(ringkasan);
+    }
+
+    // tulis log di bawah (dan juga ke console agar tetap ada)
+    function writeLog(text) {
+      const now = new Date();
+      const ts = now.toLocaleTimeString();
+      logEl.textContent = `${ts} — ${text}\n` + logEl.textContent;
+      console.log(text);
+    }
+
+    // enqueue: menambahkan supporter
+    function enqueue(nama) {
+      if (typeof nama !== 'string' || nama.trim() === '') {
+        writeLog('❗ Nama tidak valid.');
+        return false;
+      }
+      if (jumlahOrang >= KAPASITAS) {
+        writeLog(`❌ GAGAL: Antrian sudah penuh (maks ${KAPASITAS}).`);
+        return false;
+      }
+      for (let i = 0; i < KAPASITAS; i++) {
+        if (antrian[i] === null) {
+          antrian[i] = nama.trim();
+          jumlahOrang++;
+          writeLog(`✅ ${nama.trim()} ditambahkan ke slot ${i + 1}.`);
+          render();
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // dequeue: melayani supporter terdepan
+    function dequeue() {
+      if (jumlahOrang === 0) {
+        writeLog('⚠️ Antrian kosong. Tidak ada yang bisa dilayani.');
+        return null;
+      }
+      const dilayani = antrian[0];
+      for (let i = 0; i < KAPASITAS - 1; i++) {
+        antrian[i] = antrian[i + 1];
+      }
+      antrian[KAPASITAS - 1] = null;
+      jumlahOrang--;
+      writeLog(`🎟️ ${dilayani} telah dilayani dan keluar dari antrian.`);
+      render();
+      return dilayani;
+    }
+
+    // Reset antrian
+    function resetQueue() {
+      antrian = new Array(KAPASITAS).fill(null);
+      jumlahOrang = 0;
+      logEl.textContent = '';
+      render();
+      writeLog('🔁 Antrian di-reset.');
+    }
+
+    // Event listeners
+    btnEnqueue.addEventListener('click', () => {
+      enqueue(namaInput.value);
+      namaInput.value = '';
+      namaInput.focus();
+    });
+    namaInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        enqueue(namaInput.value);
+        namaInput.value = '';
+      }
+    });
+    btnDequeue.addEventListener('click', () => dequeue());
+    btnReset.addEventListener('click', resetQueue);
+
+    // contoh otomatis (mengisi sampai penuh, lalu coba tambah lagi)
+    btnAuto.addEventListener('click', () => {
+      const contoh = ['Andi','Budi','Citra','Dewi','Eko','Fajar','Gilang'];
+      for (const nama of contoh) enqueue(nama);
+      enqueue('Hendra'); // seharusnya gagal
+    });
+
+    // inisialisasi render pertama kali
+    render();
+    writeLog('Mulai simulasi antrian tiket (halaman siap).');
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<html>
+<head>
+<title> Program Grade Nilai di Javascript</title>
+<script>alert("Selamat datang di program grade nilai sederhana");</script>
+<script type="text/javascript">
+ function x()
+ {
+ var nt,np,hasil; //nt=nilai teori, np=nilai praktek
+ nt=document.forms[0].nt.value;
+ np=document.forms[0].np.value;
+ hasil=(nt*1+np*1)/2 //hasil=rumus rata2. Kenapa nt,np harus di kali 1 karena jika tidak javascript akan menganggap bahwa inputan nt,np adalah jadi 1 ( string)
+ document.forms[0].nr.value=hasil;
+ if(hasil<50)
+ ket="E";
+ else if (hasil<60)
+ ket="D";
+ else if (hasil<70)
+ ket="C";
+ else if (hasil<85)
+ ket="B";
+ else if (hasil<=100 && hasil>=85)
+ ket="A";
+ else
+ ket="Input Salah >> 0-100";
+ document.forms[0].nh.value=ket;
+ }
+ </script>
+</head>
+<body>
+<table>
+ <form>
+ <h1>Program Grade Nilai Sederhana dengan Javascript</h1>
+ <tr>
+ <label><td>Nilai Teori</td></label>
+ <td><input type="text" name=nt /></td>
+ </tr>
+ 
+ <tr>
+ <label><td>Nilai Praktek</td></label>
+ <td><input type="text" name=np /></td>
+ </tr>
+ 
+ <tr>
+ <label><td>Rata-rata</td></label>
+ <td><input type="text" name=nr /></td>
+ </tr>
+ 
+ <tr>
+ <label><td>Nilai Huruf</td></label>
+ <td><input type="text" name=nh /></td>
+ </tr>
+ <tr>
+ <td><input type="button" value="Hitung Rata-rata" onClick="x()" /></td>
+ <td><input type="reset" value="Reset" /></td>
+ </tr>
+ </form>
+</table>
+<br />
+<blink><a href="azka.parhan_ti25@nusaputra.ac.id">email: azka.parhan_ti25@nusaputra.ac.id</a></blink>
+</body>
+</html>

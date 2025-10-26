@@ -1,0 +1,14 @@
+<html>
+<body>
+  <h2>Using the <i>for-loop</i> add all elements of the array of numbers of dynamic length.</h2>
+  <div id="output"></div>
+
+  <script>
+    let output = document.getElementById('output');
+    let length = Math.random() * 15;
+    let dynamicArray = [];
+
+    // Membuat array dengan panjang acak
+    for (let i = 0; i < length; i++) {
+      dynamicArray[i] = Math.round(Math.random() * 5);
+    }

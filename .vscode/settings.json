@@ -1,0 +1,21 @@
+{
+  "background.enabled": true,
+  "background.useDefault": false,
+  "background.editor": {
+    "customImages": [
+      "file:///home/zkaz/coding-lab/images/satoru-gojo-purple-3840x2160-16581.png"
+    ],
+    "style": {
+      "content": "''",
+      "pointer-events": "none",
+      "position": "absolute",
+      "z-index": "99999",
+      "width": "100vw",
+      "height": "100vh",
+      "background-position": "center",
+      "background-repeat": "no-repeat",
+      "background-size": "cover",
+      "opacity": 0.95
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kelvin Thermometer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>Kelvin → Celsius → Fahrenheit</h1>
+
+    <div class="container">
+      <div class="thermo">
+        <div class="thermo-track">
+          <div class="thermo-fill" id="fill"></div>
+        </div>
+        <div class="thermo-bulb"></div>
+        <div class="labels">
+          <div>K</div>
+          <div>°C</div>
+          <div>°F</div>
+        </div>
+      </div>
+
+      <div class="info">
+        <label for="kelvinInput">Kelvin:</label>
+        <input id="kelvinInput" type="number" value="293" />
+        <button id="convertBtn">Convert & Show</button>
+
+        <p id="outC">Celsius: —</p>
+        <p id="outF">Fahrenheit: —</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

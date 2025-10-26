@@ -1,0 +1,51 @@
+class Stack {
+    constructor() {
+        this.items = [];
+    }
+
+    // Menambah elemen ke tumpukan
+    push(element) {
+        this.items.push(element);
+    }
+
+    // Menghapus dan mengembalikan elemen teratas dari tumpukan
+    pop() {
+        if (this.isEmpty()) {
+            return "Tumpukan kosong";
+        }
+        return this.items.pop();
+    }
+
+    // Mengembalikan elemen teratas tanpa menghapusnya
+    peek() {
+        return this.items[this.items.length - 1];
+    }
+
+    // Memeriksa apakah tumpukan kosong
+    isEmpty() {
+        return this.items.length === 0;
+    }
+
+    // Mengembalikan ukuran tumpukan
+    size() {
+        return this.items.length;
+    }
+
+    // Menghapus semua elemen dari tumpukan
+    clear() {
+        this.items = [];
+    }
+}
+
+// Contoh penggunaan
+const myStack = new Stack();
+
+myStack.push(10);
+myStack.push(20);
+myStack.push(30);
+console.log(myStack.items);      // Output: [10, 20, 30]
+console.log(myStack.peek());     // Output: 30
+console.log(myStack.pop());      // Output: 30
+console.log(myStack.items);      // Output: [10, 20]
+console.log(myStack.size());     // Output: 2
+console.log(myStack.isEmpty());  // Output: false
